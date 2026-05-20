@@ -20,26 +20,5 @@ class AdminSeeder extends Seeder
             ]
         );
 
-        $staffUser = \App\Models\User::updateOrCreate(
-            ['email' => 'staff@dinetrack.com'],
-            [
-                'role_id' => CustomConstants::ROLE_STAFF,
-                'status_id' => CustomConstants::STATUS_ACTIVE,
-                'name' => 'Staff User',
-                'password' => Hash::make('password'),
-            ]
-        );
-
-        \App\Models\Staff::updateOrCreate(
-            ['user_id' => $staffUser->id],
-            [
-                'business_id' => 1,
-                'name' => $staffUser->name,
-                'email' => $staffUser->email,
-                'status_id' => CustomConstants::STATUS_ACTIVE,
-                'created_by' => 1,
-                'updated_by' => 1,
-            ]
-        );
     }
 }

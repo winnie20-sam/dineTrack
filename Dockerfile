@@ -10,11 +10,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unzip \
-    nodejs \
-    npm
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    nginx
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
@@ -31,8 +27,8 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Install Node dependencies and build assets
-RUN npm install && npm run build
+# Copy Nginx config
+COPY docker/nginx/default.conf /etc/nginx/sites-available/default
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www \
@@ -43,6 +39,6 @@ RUN chown -R www-data:www-data /var/www \
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 9000
+EXPOSE 80
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
