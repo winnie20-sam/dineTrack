@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/logo.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -108,18 +108,18 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
     |
     */
-
-    'preloader' => [
-        'enabled' => true,
-        'mode' => 'fullscreen',
-        'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'AdminLTE Preloader Image',
-            'effect' => 'animation__shake',
-            'width' => 60,
-            'height' => 60,
-        ],
-    ],
+//
+//    'preloader' => [
+//        'enabled' => true,
+//        'mode' => 'fullscreen',
+//        'img' => [
+//            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+//            'alt' => 'AdminLTE Preloader Image',
+//            'effect' => 'animation__shake',
+//            'width' => 60,
+//            'height' => 60,
+//        ],
+//    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -425,6 +425,11 @@ return [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'css/custom.css',
                 ],
             ],
         ],
