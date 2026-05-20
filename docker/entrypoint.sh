@@ -10,6 +10,9 @@ echo "Running seeders..."
 php artisan db:seed --class=StatusSeeder --force
 php artisan db:seed --class=RoleSeeder --force
 
+echo "Publishing AdminLTE assets..."
+php artisan adminlte:install --only=assets
+
 echo "Caching config..."
 php artisan config:cache
 php artisan route:cache

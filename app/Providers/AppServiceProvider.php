@@ -5,22 +5,27 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Shared\CustomConstants;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
+        // Force HTTPS in production
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
+        // Bootstrap pagination
+        Paginator::useBootstrap();
+
+        // Gates
         Gate::define('admin-access', fn($user) => in_array($user->role_id, [
             CustomConstants::ROLE_ADMIN,
             CustomConstants::ROLE_OWNER,
