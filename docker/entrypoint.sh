@@ -15,6 +15,6 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-echo "Starting Nginx and PHP-FPM..."
+echo "Starting services..."
 service nginx start
 php-fpm
