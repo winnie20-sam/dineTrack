@@ -125,6 +125,7 @@ class StaffController extends BaseController
             'email'     => $request->email,
             'password'  => Hash::make($tempPassword),
             'role_id'   => $this->const::ROLE_STAFF,
+            'business_id' => $request->business_id,
             'status_id' => $this->const::STATUS_ACTIVE,
         ];
     }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('role_id')->default(1)->constrained('roles')->restrictOnDelete();
             $table->foreignId('status_id')->default(1)->constrained('statuses')->restrictOnDelete();
+            $table->unsignedBigInteger('business_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();

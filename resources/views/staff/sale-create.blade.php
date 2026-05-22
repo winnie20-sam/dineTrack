@@ -40,7 +40,9 @@
                                     class="form-control select2 @error('item_id') is-invalid @enderror" required>
                                 <option value="">— Select Item —</option>
                                 @foreach($items as $item)
-                                    <option value="{{ $item->id }}" data-price="{{ $item->price }}">
+                                    <option value="{{ $item->id }}"
+                                            data-price="{{ $item->price }}"
+                                        {{ old('item_id') == $item->id ? 'selected' : '' }}>
                                         [{{ $item->code }}] {{ $item->name }}
                                     </option>
                                 @endforeach
@@ -60,7 +62,8 @@
                             <label>Unit Price <span class="text-danger">*</span></label>
                             <input type="number" name="unit_price" id="unit_price"
                                    class="form-control @error('unit_price') is-invalid @enderror"
-                                   step="0.01" min="0" placeholder="0.00" required>
+                                   step="0.01" min="0" placeholder="0.00"
+                                   value="{{ old('unit_price') }}" required>
                             @error('unit_price')<span class="invalid-feedback">{{ $message }}</span>@enderror
                         </div>
 
@@ -136,40 +139,41 @@
 @stop
 
 @section('plugins.Select2', true)
-@section('plugins.Datatables', true)
 
 @section('js')
     <script>
         $(function () {
             $('.select2').select2({ width: '100%' });
 
-            $('#sales-table').DataTable({
-                pageLength: 10,
-                order: [[0, 'desc']],
-                language: { search: 'Filter:' }
-            });
 
+            // prices map — same approach as admin blade
             const prices = {
                 @foreach($items as $item)
                     {{ $item->id }}: {{ $item->price }},
                 @endforeach
             };
-
-            function recalc() {
+            
+            function recalcTotal() {
                 const qty   = parseFloat($('#quantity').val())   || 0;
                 const price = parseFloat($('#unit_price').val()) || 0;
                 $('#total_preview').val((qty * price).toFixed(2));
             }
 
+            // auto-fill unit price when item is selected
             $('#item_id').on('change', function () {
-                const price = prices[$(this).val()];
-                if (price !== undefined) $('#unit_price').val(price);
-                else $('#unit_price').val('');
-                recalc();
+                const itemId = $(this).val();
+                if (itemId && prices[itemId] !== undefined) {
+                    $('#unit_price').val(prices[itemId]);
+                } else {
+                    $('#unit_price').val('');
+                }
+                recalcTotal();
             });
 
-            $('#quantity, #unit_price').on('input change', recalc);
-            recalc();
+            $('#quantity, #unit_price').on('input change', recalcTotal);
+
+            // trigger on page load for validation redirects
+            recalcTotal();
         });
     </script>
 @stop

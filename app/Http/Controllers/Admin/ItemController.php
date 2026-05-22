@@ -22,7 +22,15 @@ class ItemController extends BaseController
      */
     public function index()
     {
-        $items = Item::with(['business', 'status', 'createdBy'])->latest()->get();
+        $user = auth()->user();
+
+        $query = Item::with(['business', 'status', 'createdBy']);
+
+        if ($user->role_id === $this->const::ROLE_STAFF) {
+            $query->where('business_id', $user->business_id);
+        }
+
+        $items = $query->latest()->get();
         return view('admin.items.index', compact('items'));
     }
 
