@@ -171,7 +171,7 @@ class StaffController extends BaseController
         return [
             'business_id' => $request->business_id,
             'name'        => $request->name,
-            'email'       => $request->email,
+            // 'email'       => $request->email,
             'phone'       => $request->phone,
             'status_id'   => $request->status_id,
             'updated_by'  => auth()->id(),
@@ -185,30 +185,34 @@ class StaffController extends BaseController
      * @param Staff $staff
      * @return JsonResponse|RedirectResponse
      */
-    public function update(Request $request, Staff $staff): JsonResponse|RedirectResponse
-    {
-        try {
-            return DB::transaction(function () use ($request, $staff) {
-                $valid = $this->validateUpdatePayload($request, $staff);
-                if ($valid->fails()) {
-                    return $this->resp->response($this->const::RESPONSE_STATUS_FAILED, $valid->errors()->all(), '');
-                }
+   public function update(Request $request, Staff $staff): RedirectResponse
+{
+    try {
+        return DB::transaction(function () use ($request, $staff) {
+            $valid = $this->validateUpdatePayload($request, $staff);
+            if ($valid->fails()) {
+                return redirect()->back()
+                    ->withErrors($valid)
+                    ->withInput();
+            }
 
-                $staff->update($this->staffUpdatePayload($request));
+            $staff->update($this->staffUpdatePayload($request));
 
-                if ($staff->user) {
-                    $staff->user->update([
-                        'name'  => $request->name,
-                        'email' => $request->email,
-                    ]);
-                }
+            if ($staff->user) {
+                $staff->user->update([
+                    'name'  => $request->name,
+                    'email' => $request->email,
+                ]);
+            }
 
-                return $this->success('admin.staff.index', $this->const::STAFF_UPDATED);
-            });
-        } catch (Exception $e) {
-            return $this->resp->response($this->const::RESPONSE_STATUS_FAILED, $e->getMessage(), '');
-        }
+            return $this->success('admin.staff.index', $this->const::STAFF_UPDATED);
+        });
+    } catch (Exception $e) {
+        return redirect()->back()
+            ->with('error', $e->getMessage())
+            ->withInput();
     }
+}
 
     /**
      * Mark the specified staff member and their user account as deleted

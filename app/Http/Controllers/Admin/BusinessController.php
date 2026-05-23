@@ -164,23 +164,27 @@ class BusinessController extends BaseController
      * @param Business $business
      * @return JsonResponse|RedirectResponse
      */
-    public function update(Request $request, Business $business): JsonResponse|RedirectResponse
-    {
-        try {
-            return DB::transaction(function () use ($request, $business) {
-                $valid = $this->validateUpdatePayload($request, $business);
-                if ($valid->fails()) {
-                    return $this->resp->response($this->const::RESPONSE_STATUS_FAILED, $valid->errors()->all(), '');
-                }
+   public function update(Request $request, Business $business): RedirectResponse
+{
+    try {
+        return DB::transaction(function () use ($request, $business) {
+            $valid = $this->validateUpdatePayload($request, $business);
+            if ($valid->fails()) {
+                return redirect()->back()
+                    ->withErrors($valid)
+                    ->withInput();
+            }
 
-                $business->update($this->businessUpdatePayload($request));
+            $business->update($this->businessUpdatePayload($request));
 
-                return $this->success('admin.businesses.index', $this->const::BUSINESS_UPDATED);
-            });
-        } catch (Exception $e) {
-            return $this->resp->response($this->const::RESPONSE_STATUS_FAILED, $e->getMessage(), '');
-        }
+            return $this->success('admin.businesses.index', $this->const::BUSINESS_UPDATED);
+        });
+    } catch (Exception $e) {
+        return redirect()->back()
+            ->with('error', $e->getMessage())
+            ->withInput();
     }
+}
 
     /**
      * Mark the specified business as deleted
