@@ -19,20 +19,24 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
         'role_id',
         'status_id',
     ];
 
-    public function businesses()
-    {
-        return $this->belongsToMany(Business::class)->withPivot('role')->withTimestamps();
-    }
+   public function role()
+{
+    return $this->belongsTo(Role::class);
+}
 
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
-    }
+public function status()
+{
+    return $this->belongsTo(Status::class);
+}
+
+public function businesses()
+{
+    return $this->belongsToMany(Business::class)->withPivot('role')->withTimestamps();
+}
 
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;

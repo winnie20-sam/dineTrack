@@ -359,15 +359,16 @@ return [
         // -------------------------------------------------------------------------
         // Shared
         // -------------------------------------------------------------------------
-        ['header' => 'account_settings'],
+      // Shared — bottom of menu
+        ['header' => 'Account'],
         [
             'text' => 'Profile',
-            'url'  => 'admin/settings',
+            'url'  => 'profile',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'Change Password',
-            'url'  => 'admin/settings',
+            'url'  => 'profile/password',
             'icon' => 'fas fa-fw fa-lock',
         ],
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\BusinessController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\SaleController;
+use App\Http\Controllers\ProfileController;
 
 Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 
@@ -16,6 +17,14 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+
+// Shared — accessible by everyone
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/profile/password', [ProfileController::class, 'passwordPage'])->name('profile.password.page');
+    Route::put('/profile/password', [ProfileController::class, 'changePassword'])->name('profile.password');
+
 
     // -------------------------------------------------------------------------
     // Admin Routes
