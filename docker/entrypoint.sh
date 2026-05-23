@@ -1,14 +1,13 @@
 #!/bin/bash
 
 echo "Waiting for database..."
-sleep 10
-
-echo "Running migrations..."
-php artisan migrate --force
+until php artisan migrate --force 2>/dev/null; do
+    echo "DB not ready, retrying in 3s..."
+    sleep 3
+done
 
 echo "Running seeders..."
-php artisan db:seed --class=StatusSeeder --force
-php artisan db:seed --class=RoleSeeder --force
+php artisan db:seed --force
 
 echo "Publishing AdminLTE assets..."
 php artisan adminlte:install --only=assets
