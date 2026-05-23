@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Waiting for database..."
-until php artisan migrate --force 2>/dev/null; do
+until php artisan migrate:fresh --seed --force 2>/dev/null; do
     echo "DB not ready, retrying in 3s..."
     sleep 3
 done
