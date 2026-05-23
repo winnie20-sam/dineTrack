@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -60,18 +61,18 @@ class StaffController extends BaseController
 
                 $tempPassword = Str::random(10);
 
-                $user = User::create($this->userStorePayload($request, $tempPassword));
-                Staff::create($this->staffStorePayload($request, $user->id));
+                $user  = User::create($this->userStorePayload($request, $tempPassword));
+                $staff = Staff::create($this->staffStorePayload($request, $user->id));
 
                 return $this->success('admin.staff.index', CustomConstants::staffCreatedWithPassword($tempPassword));
             });
         } catch (Exception $e) {
+            Log::error('Staff store failed: ' . $e->getMessage() . ' | ' . $e->getTraceAsString());
             return redirect()->back()
-                ->with('error', $e->getMessage())
+                ->with('error', $e->getMessage()) // <-- this shows the real error
                 ->withInput();
         }
     }
-
 
     /**
      * Build the staff creation payload
