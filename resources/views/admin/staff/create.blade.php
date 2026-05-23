@@ -23,6 +23,12 @@
 @stop
 
 @section('content')
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        </div>
+    @endif
     <div class="card card-outline card-primary">
         <div class="card-header">
             <h3 class="card-title"><i class="fas fa-user-plus mr-2"></i>Staff Details</h3>
@@ -112,6 +118,7 @@
         </form>
     </div>
 @stop
+
 
 @section('plugins.Select2', true)
 
