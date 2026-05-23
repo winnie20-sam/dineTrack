@@ -24,21 +24,25 @@ class User extends Authenticatable
         'status_id',
     ];
 
-   public function role()
-{
-    return $this->belongsTo(Role::class);
-}
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 
-public function status()
-{
-    return $this->belongsTo(Status::class);
-}
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 
-public function businesses()
-{
-    return $this->belongsToMany(Business::class)->withPivot('role')->withTimestamps();
-}
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
 
+    public function businesses()
+    {
+        return $this->belongsToMany(Business::class)->withPivot('role')->withTimestamps();
+    }
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
