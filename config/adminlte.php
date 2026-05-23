@@ -356,6 +356,12 @@ return [
             'can'  => 'staff-access',
         ],
         [
+            'text' => 'Orders',
+            'url'  => 'admin/orders',
+            'icon' => 'fas fa-shopping-cart',
+            'can'  => 'admin-access',
+        ],
+        [
             'text' => 'Reports',
             'url'  => 'admin/reports',
             'icon' => 'fas fa-chart-bar',

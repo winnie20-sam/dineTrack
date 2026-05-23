@@ -3,11 +3,19 @@
 @section('title', 'Staff')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="m-0 text-dark">Staff Members</h1>
-        <a href="{{ route('admin.staff.create') }}" class="btn btn-primary btn-sm">
-            <i class="fas fa-plus mr-1"></i> Add Staff
-        </a>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4 class="m-0 text-dark">Staff Members</h4>
+            <ol class="breadcrumb p-0 m-0 bg-transparent">
+                <li class="breadcrumb-item active">Home</li>
+                <li class="breadcrumb-item active">Staff</li>
+            </ol>
+        </div>
+        <div class="col-sm-6 d-flex justify-content-end align-items-center">
+            <a href="{{ route('admin.staff.create') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus mr-1"></i> Add Staff
+            </a>
+        </div>
     </div>
 @stop
 
@@ -47,9 +55,9 @@
                         <td>{{ $member->phone ?? '—' }}</td>
                         <td>{{ $member->business->name ?? '—' }}</td>
                         <td>
-                                <span class="badge badge-{{ $member->status->name === 'Active' ? 'success' : 'secondary' }}">
-                                    {{ $member->status->name ?? '—' }}
-                                </span>
+                            <span class="badge badge-{{ $member->status->name === 'Active' ? 'success' : 'secondary' }}">
+                                {{ $member->status->name ?? '—' }}
+                            </span>
                         </td>
                         <td>
                             @if($member->user)
@@ -59,8 +67,7 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('admin.staff.edit', $member) }}"
-                               class="btn btn-xs btn-warning">
+                            <a href="{{ route('admin.staff.edit', $member) }}" class="btn btn-xs btn-warning">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <form action="{{ route('admin.staff.destroy', $member) }}"
@@ -86,6 +93,7 @@
             </table>
         </div>
     </div>
+
 @stop
 
 @section('plugins.Datatables', true)

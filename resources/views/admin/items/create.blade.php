@@ -3,13 +3,24 @@
 @section('title', 'Add Item')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center">
-        <h1>Add Menu Item</h1>
-        <a href="{{ route('admin.items.index') }}" class="btn btn-default">
-            <i class="fas fa-arrow-left"></i> Back
-        </a>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4 class="m-0 text-dark">Add Menu Item</h4>
+            <ol class="breadcrumb p-0 m-0 bg-transparent">
+                <li class="breadcrumb-item active">Home</li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('admin.items.index') }}">Menu Items</a>
+                </li>
+                <li class="breadcrumb-item active">Add</li>
+            </ol>
+        </div>
+        <div class="col-sm-6 d-flex justify-content-end align-items-center">
+            <a href="{{ route('admin.items.index') }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-times mr-1"></i> Cancel
+            </a>
+        </div>
     </div>
-@endsection
+@stop
 
 @section('content')
     <div class="card">
@@ -32,7 +43,8 @@
 
                 <div class="form-group">
                     <label>Name</label>
-                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Item name">
+                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                           value="{{ old('name') }}" placeholder="Item name">
                     @error('name') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
 
@@ -40,24 +52,26 @@
                     <label>Category</label>
                     <select name="category" class="form-control @error('category') is-invalid @enderror">
                         <option value="">-- Select Category --</option>
-                        <option value="Food" {{ old('category') == 'Food' ? 'selected' : '' }}>Food</option>
-                        <option value="Drinks" {{ old('category') == 'Drinks' ? 'selected' : '' }}>Drinks</option>
+                        <option value="Food"    {{ old('category') == 'Food'    ? 'selected' : '' }}>Food</option>
+                        <option value="Drinks"  {{ old('category') == 'Drinks'  ? 'selected' : '' }}>Drinks</option>
                         <option value="Dessert" {{ old('category') == 'Dessert' ? 'selected' : '' }}>Dessert</option>
-                        <option value="Other" {{ old('category') == 'Other' ? 'selected' : '' }}>Other</option>
+                        <option value="Other"   {{ old('category') == 'Other'   ? 'selected' : '' }}>Other</option>
                     </select>
                     @error('category') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="form-group">
                     <label>Price (KES)</label>
-                    <input type="number" name="price" step="0.01" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" placeholder="0.00">
+                    <input type="number" name="price" step="0.01"
+                           class="form-control @error('price') is-invalid @enderror"
+                           value="{{ old('price') }}" placeholder="0.00">
                     @error('price') <span class="invalid-feedback">{{ $message }}</span> @enderror
                 </div>
 
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Save Item
+                    <i class="fas fa-save mr-1"></i> Save Item
                 </button>
             </form>
         </div>
     </div>
-@endsection
+@stop

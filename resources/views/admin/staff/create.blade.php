@@ -3,11 +3,22 @@
 @section('title', 'Add Staff Member')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="m-0 text-dark">Add Staff Member</h1>
-        <a href="{{ route('admin.staff.index') }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left mr-1"></i> Back to Staff
-        </a>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4 class="m-0 text-dark">Add Staff Member</h4>
+            <ol class="breadcrumb p-0 m-0 bg-transparent">
+                <li class="breadcrumb-item active">Home</li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('admin.staff.index') }}">Staff</a>
+                </li>
+                <li class="breadcrumb-item active">Add</li>
+            </ol>
+        </div>
+        <div class="col-sm-6 d-flex justify-content-end align-items-center">
+            <a href="{{ route('admin.staff.index') }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-times mr-1"></i> Cancel
+            </a>
+        </div>
     </div>
 @stop
 

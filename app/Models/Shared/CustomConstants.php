@@ -79,6 +79,11 @@ class CustomConstants
     const BUSINESS_DELETED = 'Business removed successfully.';
     const SALE_CREATED = 'Sales created successfully.';
 
+    const ORDER_CREATED   = 'Order created successfully.';
+    const ORDER_UPDATED   = 'Order updated successfully.';
+    const ORDER_CANCELLED = 'Order cancelled successfully.';
+    const ORDER_TBL_PREFIX = 'ORD';
+
 
 
     // -------------------------------------------------------------------------
