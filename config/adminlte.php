@@ -321,6 +321,12 @@ return [
             'can'  => 'admin-access',
         ],
         [
+            'text' => 'User Management',
+            'url'  => 'admin/users',
+            'icon' => 'fas fa-user-cog',
+            'can'  => 'admin-access',
+        ],
+        [
             'text' => 'Menu Items',
             'url'  => 'admin/items',
             'icon' => 'fas fa-utensils',
@@ -332,28 +338,6 @@ return [
             'icon'   => 'fas fa-cash-register',
             'active' => ['admin/sales', 'admin/sales/*'],
             'can'    => 'admin-access',
-        ],
-
-        // -------------------------------------------------------------------------
-        // Staff Only
-        // -------------------------------------------------------------------------
-        [
-            'text' => 'Dashboard',
-            'url'  => 'staff',
-            'icon' => 'fas fa-tachometer-alt',
-            'can'  => 'staff-access',
-        ],
-        [
-            'text' => 'Menu Items',
-            'url'  => 'staff/items',  // ← was admin/items
-            'icon' => 'fas fa-utensils',
-            'can'  => 'staff-access',
-        ],
-        [
-            'text' => 'Record Sale',
-            'url'  => 'staff/sale/create',
-            'icon' => 'fas fa-cash-register',
-            'can'  => 'staff-access',
         ],
         [
             'text' => 'Orders',
@@ -369,9 +353,30 @@ return [
         ],
 
         // -------------------------------------------------------------------------
+        // Staff Only
+        // -------------------------------------------------------------------------
+        [
+            'text' => 'Dashboard',
+            'url'  => 'staff',
+            'icon' => 'fas fa-tachometer-alt',
+            'can'  => 'staff-access',
+        ],
+        [
+            'text' => 'Menu Items',
+            'url'  => 'staff/items',
+            'icon' => 'fas fa-utensils',
+            'can'  => 'staff-access',
+        ],
+        [
+            'text' => 'Record Sale',
+            'url'  => 'staff/sale/create',
+            'icon' => 'fas fa-cash-register',
+            'can'  => 'staff-access',
+        ],
+
+        // -------------------------------------------------------------------------
         // Shared
         // -------------------------------------------------------------------------
-      // Shared — bottom of menu
         ['header' => 'Account'],
         [
             'text' => 'Profile',
