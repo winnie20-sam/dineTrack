@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Staff\StaffDashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('staff',      StaffController::class);
             Route::resource('items',      ItemController::class);
             Route::resource('sales',      SaleController::class)->only(['index', 'create', 'store']);
+            Route::resource('users', UserController::class)->only(['index', 'edit', 'update']);
             Route::resource('orders', OrderController::class)->only(['index', 'create', 'store', 'show', 'update', 'destroy']);
             Route::get('reports',                [ReportController::class, 'index'])->name('reports.index');
             Route::get('reports/generate',       [ReportController::class, 'generate'])->name('reports.generate');
