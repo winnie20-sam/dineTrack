@@ -355,6 +355,12 @@ return [
             'icon' => 'fas fa-cash-register',
             'can'  => 'staff-access',
         ],
+        [
+            'text' => 'Reports',
+            'url'  => 'admin/reports',
+            'icon' => 'fas fa-chart-bar',
+            'can'  => 'admin-access',
+        ],
 
         // -------------------------------------------------------------------------
         // Shared

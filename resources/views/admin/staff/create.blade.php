@@ -12,17 +12,17 @@
 @stop
 
 @section('content')
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <div class="card card-outline card-primary">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-user-plus mr-2"></i>Staff Details</h3>
-                </div>
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-user-plus mr-2"></i>Staff Details</h3>
+        </div>
 
-                <form action="{{ route('admin.staff.store') }}" method="POST">
-                    @csrf
-                    <div class="card-body">
+        <form action="{{ route('admin.staff.store') }}" method="POST">
+            @csrf
+            <div class="card-body">
 
+                <div class="row">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="business_id">Business <span class="text-danger">*</span></label>
                             <select name="business_id" id="business_id"
@@ -39,7 +39,9 @@
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
+                    </div>
 
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="name">Full Name <span class="text-danger">*</span></label>
                             <input type="text" name="name" id="name"
@@ -49,7 +51,11 @@
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="email">Email Address <span class="text-danger">*</span></label>
                             <input type="email" name="email" id="email"
@@ -60,7 +66,9 @@
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
+                    </div>
 
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
                             <input type="text" name="phone" id="phone"
@@ -70,23 +78,27 @@
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="callout callout-info">
                             <i class="fas fa-info-circle mr-1"></i>
                             A temporary password will be generated and shown after saving.
                             The staff member should change it on first login.
                         </div>
+                    </div>
+                </div>
 
-                    </div>
-                    <div class="card-footer d-flex justify-content-end">
-                        <a href="{{ route('admin.staff.index') }}" class="btn btn-secondary mr-2">Cancel</a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save mr-1"></i> Add Staff Member
-                        </button>
-                    </div>
-                </form>
             </div>
-        </div>
+            <div class="card-footer d-flex justify-content-end">
+                <a href="{{ route('admin.staff.index') }}" class="btn btn-secondary mr-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save mr-1"></i> Add Staff Member
+                </button>
+            </div>
+        </form>
     </div>
 @stop
 
