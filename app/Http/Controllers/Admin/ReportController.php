@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\SalesReportExport;
 use App\Http\Controllers\BaseController;
 use App\Models\Business;
-use App\Models\Sale;
+use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
@@ -44,18 +44,18 @@ class ReportController extends BaseController
                     ->withInput();
             }
 
-            [$business, $sales, $label, $from, $to, $totalRevenue, $totalSales, $avgSale, $byCategory, $byStaff, $byItem] = $this->buildReport($request);
+            [$business, $orders, $label, $from, $to, $totalRevenue, $totalOrders, $avgOrder, $byPayment, $byStaff, $byItem] = $this->buildReport($request);
 
             return view('admin.reports.show', compact(
                 'business',
-                'sales',
+                'orders',
                 'label',
                 'from',
                 'to',
                 'totalRevenue',
-                'totalSales',
-                'avgSale',
-                'byCategory',
+                'totalOrders',
+                'avgOrder',
+                'byPayment',
                 'byStaff',
                 'byItem'
             ));
@@ -75,18 +75,18 @@ class ReportController extends BaseController
     public function exportPdf(Request $request)
     {
         try {
-            [$business, $sales, $label, $from, $to, $totalRevenue, $totalSales, $avgSale, $byCategory, $byStaff, $byItem] = $this->buildReport($request);
+            [$business, $orders, $label, $from, $to, $totalRevenue, $totalOrders, $avgOrder, $byPayment, $byStaff, $byItem] = $this->buildReport($request);
 
             $pdf = Pdf::loadView('admin.reports.pdf', compact(
                 'business',
-                'sales',
+                'orders',
                 'label',
                 'from',
                 'to',
                 'totalRevenue',
-                'totalSales',
-                'avgSale',
-                'byCategory',
+                'totalOrders',
+                'avgOrder',
+                'byPayment',
                 'byStaff',
                 'byItem'
             ))->setPaper('a4', 'landscape');
@@ -106,10 +106,10 @@ class ReportController extends BaseController
     public function exportExcel(Request $request)
     {
         try {
-            [$business, $sales, $label, $from, $to, $totalRevenue, $totalSales, $avgSale, $byCategory, $byStaff, $byItem] = $this->buildReport($request);
+            [$business, $orders, $label, $from, $to, $totalRevenue, $totalOrders, $avgOrder, $byPayment, $byStaff, $byItem] = $this->buildReport($request);
 
             return Excel::download(
-                new SalesReportExport($sales, $label, $totalRevenue, $totalSales, $avgSale, $byCategory, $byStaff, $byItem),
+                new SalesReportExport($orders, $label, $totalRevenue, $totalOrders, $avgOrder, $byPayment, $byStaff, $byItem),
                 'dinetrack-report-' . now()->format('Y-m-d') . '.xlsx'
             );
         } catch (Exception $e) {
@@ -118,7 +118,7 @@ class ReportController extends BaseController
     }
 
     // -------------------------------------------------------------------------
-    //  validate report request payload
+    // Private — validate report request payload
     // -------------------------------------------------------------------------
 
     /**
@@ -137,7 +137,7 @@ class ReportController extends BaseController
     }
 
     // -------------------------------------------------------------------------
-    //  build report data from request
+    // Private — build report data from request
     // -------------------------------------------------------------------------
 
     /**
@@ -151,39 +151,42 @@ class ReportController extends BaseController
         $business = Business::findOrFail($request->business_id);
         $from     = Carbon::parse($request->date_from)->startOfDay();
         $to       = Carbon::parse($request->date_to)->endOfDay();
-        $label    = ucfirst($request->type) . ' Report — ' . $from->format('d M Y') . ' to ' . $to->format('d M Y');
+        $label    = 'Sales Report — ' . $from->format('d M Y') . ' to ' . $to->format('d M Y');
 
-        $sales = Sale::with(['staff', 'item'])
+        $orders = Order::with(['staff', 'items.item', 'paymentMethod'])
             ->where('business_id', $business->id)
-            ->whereBetween('sale_date', [$from, $to])
+            ->whereBetween('order_date', [$from, $to])
             ->latest()
             ->get();
 
-        $totalRevenue = $sales->sum('total');
-        $totalSales   = $sales->count();
-        $avgSale      = $totalSales > 0 ? $totalRevenue / $totalSales : 0;
+        $totalRevenue = $orders->sum('total');
+        $totalOrders  = $orders->count();
+        $avgOrder     = $totalOrders > 0 ? $totalRevenue / $totalOrders : 0;
 
-        $byCategory = $this->groupSales($sales, 'item.category');
-        $byStaff    = $this->groupSales($sales, 'staff.name')->sortByDesc('revenue');
-        $byItem     = $this->groupSales($sales, 'item.name')->sortByDesc('revenue');
+        $byPayment = $this->groupOrders($orders, 'paymentMethod.name');
+        $byStaff   = $this->groupOrders($orders, 'staff.name')->sortByDesc('revenue');
+        $byItem    = $orders->flatMap->items->groupBy('item.name')->map(fn($group) => [
+            'count'   => $group->sum('quantity'),
+            'revenue' => $group->sum('total'),
+        ])->sortByDesc('revenue');
 
         return [
-            $business, $sales, $label, $from, $to,
-            $totalRevenue, $totalSales, $avgSale,
-            $byCategory, $byStaff, $byItem,
+            $business, $orders, $label, $from, $to,
+            $totalRevenue, $totalOrders, $avgOrder,
+            $byPayment, $byStaff, $byItem,
         ];
     }
 
     /**
-     * Group sales collection by a given key
+     * Group orders collection by a given key
      *
-     * @param Collection $sales
+     * @param Collection $orders
      * @param string $key
      * @return Collection
      */
-    private function groupSales($sales, string $key): Collection
+    private function groupOrders(Collection $orders, string $key): Collection
     {
-        return $sales->groupBy($key)->map(fn($group) => [
+        return $orders->groupBy($key)->map(fn($group) => [
             'count'   => $group->count(),
             'revenue' => $group->sum('total'),
         ]);

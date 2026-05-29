@@ -35,8 +35,8 @@
         <div class="col-lg-4 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>{{ $totalSales }}</h3>
-                    <p>Total Sales</p>
+                    <h3>{{ $totalOrders }}</h3>
+                    <p>Total Orders</p>
                 </div>
                 <div class="icon"><i class="fas fa-receipt"></i></div>
             </div>
@@ -44,8 +44,8 @@
         <div class="col-lg-4 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>KES {{ number_format($avgSale, 2) }}</h3>
-                    <p>Average Sale</p>
+                    <h3>KES {{ number_format($avgOrder, 2) }}</h3>
+                    <p>Average Order</p>
                 </div>
                 <div class="icon"><i class="fas fa-chart-line"></i></div>
             </div>
@@ -53,6 +53,7 @@
     </div>
 
     <div class="row">
+
         {{-- By Staff --}}
         <div class="col-md-4">
             <div class="card card-outline card-primary">
@@ -62,53 +63,53 @@
                 <div class="card-body p-0">
                     <table class="table table-sm table-hover">
                         <thead>
-                        <tr>
-                            <th>Staff</th>
-                            <th>Sales</th>
-                            <th>Revenue</th>
-                        </tr>
+                            <tr>
+                                <th>Staff</th>
+                                <th>Orders</th>
+                                <th>Revenue</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @forelse($byStaff as $name => $data)
-                            <tr>
-                                <td>{{ $name }}</td>
-                                <td>{{ $data['count'] }}</td>
-                                <td>KES {{ number_format($data['revenue'], 2) }}</td>
-                            </tr>
-                        @empty
-                            <tr><td colspan="3" class="text-center">No data</td></tr>
-                        @endforelse
+                            @forelse($byStaff as $name => $data)
+                                <tr>
+                                    <td>{{ $name }}</td>
+                                    <td>{{ $data['count'] }}</td>
+                                    <td>KES {{ number_format($data['revenue'], 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center">No data</td></tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        {{-- By Category --}}
+        {{-- By Payment Method --}}
         <div class="col-md-4">
             <div class="card card-outline card-info">
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-utensils mr-2"></i>By Category</h3>
+                    <h3 class="card-title"><i class="fas fa-credit-card mr-2"></i>By Payment Method</h3>
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-sm table-hover">
                         <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Sales</th>
-                            <th>Revenue</th>
-                        </tr>
+                            <tr>
+                                <th>Payment</th>
+                                <th>Orders</th>
+                                <th>Revenue</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @forelse($byCategory as $category => $data)
-                            <tr>
-                                <td>{{ $category }}</td>
-                                <td>{{ $data['count'] }}</td>
-                                <td>KES {{ number_format($data['revenue'], 2) }}</td>
-                            </tr>
-                        @empty
-                            <tr><td colspan="3" class="text-center">No data</td></tr>
-                        @endforelse
+                            @forelse($byPayment as $payment => $data)
+                                <tr>
+                                    <td>{{ $payment }}</td>
+                                    <td>{{ $data['count'] }}</td>
+                                    <td>KES {{ number_format($data['revenue'], 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center">No data</td></tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -124,71 +125,72 @@
                 <div class="card-body p-0">
                     <table class="table table-sm table-hover">
                         <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Qty</th>
-                            <th>Revenue</th>
-                        </tr>
+                            <tr>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Revenue</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @forelse($byItem as $name => $data)
-                            <tr>
-                                <td>{{ $name }}</td>
-                                <td>{{ $data['count'] }}</td>
-                                <td>KES {{ number_format($data['revenue'], 2) }}</td>
-                            </tr>
-                        @empty
-                            <tr><td colspan="3" class="text-center">No data</td></tr>
-                        @endforelse
+                            @forelse($byItem as $name => $data)
+                                <tr>
+                                    <td>{{ $name }}</td>
+                                    <td>{{ $data['count'] }}</td>
+                                    <td>KES {{ number_format($data['revenue'], 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center">No data</td></tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
     </div>
 
-    {{-- All Sales --}}
+    {{-- All Orders --}}
     <div class="card card-outline card-secondary">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-list mr-2"></i>All Transactions</h3>
+            <h3 class="card-title"><i class="fas fa-list mr-2"></i>All Orders</h3>
         </div>
         <div class="card-body p-0">
-            <table class="table table-bordered table-hover table-sm" id="sales-table">
+            <table class="table table-bordered table-hover table-sm" id="orders-table">
                 <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Date</th>
-                    <th>Staff</th>
-                    <th>Item</th>
-                    <th>Category</th>
-                    <th>Qty</th>
-                    <th>Unit Price</th>
-                    <th>Total</th>
-                </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Order No.</th>
+                        <th>Date</th>
+                        <th>Staff</th>
+                        <th>Table</th>
+                        <th>Items</th>
+                        <th>Payment</th>
+                        <th>Total</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @forelse($sales as $sale)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ \Carbon\Carbon::parse($sale->sale_date)->format('d M Y') }}</td>
-                        <td>{{ $sale->staff->name ?? '—' }}</td>
-                        <td>{{ $sale->item->name ?? '—' }}</td>
-                        <td>{{ $sale->item->category ?? '—' }}</td>
-                        <td>{{ $sale->quantity }}</td>
-                        <td>KES {{ number_format($sale->unit_price, 2) }}</td>
-                        <td>KES {{ number_format($sale->total, 2) }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="8" class="text-center">No sales found for this period.</td>
-                    </tr>
-                @endforelse
+                    @forelse($orders as $order)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><span class="badge badge-primary">{{ $order->order_number }}</span></td>
+                            <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</td>
+                            <td>{{ $order->staff->name ?? '—' }}</td>
+                            <td>{{ $order->table_number ?? '—' }}</td>
+                            <td>{{ $order->items->count() }}</td>
+                            <td>{{ $order->paymentMethod->name ?? '—' }}</td>
+                            <td>KES {{ number_format($order->total, 2) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center">No orders found for this period.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
                 <tfoot>
-                <tr class="font-weight-bold bg-light">
-                    <td colspan="7" class="text-right">Grand Total</td>
-                    <td>KES {{ number_format($totalRevenue, 2) }}</td>
-                </tr>
+                    <tr class="font-weight-bold bg-light">
+                        <td colspan="7" class="text-right">Grand Total</td>
+                        <td>KES {{ number_format($totalRevenue, 2) }}</td>
+                    </tr>
                 </tfoot>
             </table>
         </div>
@@ -201,8 +203,8 @@
 @section('js')
     <script>
         $(function () {
-            $('#sales-table').DataTable({
-                order: [[1, 'desc']],
+            $('#orders-table').DataTable({
+                order: [[2, 'desc']],
                 pageLength: 25,
                 columnDefs: [{ orderable: false, targets: [0] }]
             });

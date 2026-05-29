@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Staff\StaffDashboardController;
+use App\Http\Controllers\Staff\StaffOrderController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\DashboardController;
@@ -51,14 +52,17 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
-    // -------------------------------------------------------------------------
-    // Staff Routes
-    // -------------------------------------------------------------------------
-    Route::prefix('staff')->name('staff.')->middleware(['staff'])->group(function () {
-        Route::get('/',      [StaffDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/sale/create', [StaffDashboardController::class, 'createSale'])->name('sale.create');
-        Route::post('/sale', [StaffDashboardController::class, 'recordSale'])->name('sale.store');
-        Route::get('/items', [ItemController::class, 'index'])->name('items.index');
-    });
-
-});
+    /// -------------------------------------------------------------------------
+        // Staff Routes
+        // -------------------------------------------------------------------------
+        Route::prefix('staff')->name('staff.')->middleware(['staff'])->group(function () {
+            Route::get('/',                [StaffDashboardController::class, 'index'])->name('dashboard');
+            Route::get('/sale/create',     [StaffDashboardController::class, 'createSale'])->name('sale.create');
+            Route::post('/sale',           [StaffDashboardController::class, 'recordSale'])->name('sale.store');
+            Route::get('/items',           [ItemController::class, 'index'])->name('items.index');
+            Route::get('/orders',          [StaffOrderController::class, 'index'])->name('orders.index');
+            Route::get('/orders/create',   [StaffOrderController::class, 'create'])->name('orders.create');
+            Route::post('/orders',         [StaffOrderController::class, 'store'])->name('orders.store');
+            Route::get('/orders/{order}',  [StaffOrderController::class, 'show'])->name('orders.show');
+        });
+        });

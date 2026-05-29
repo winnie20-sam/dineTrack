@@ -367,10 +367,22 @@ return [
             'icon' => 'fas fa-utensils',
             'can'  => 'staff-access',
         ],
+        // [
+        //     'text' => 'Record Sale',
+        //     'url'  => 'staff/sale/create',
+        //     'icon' => 'fas fa-cash-register',
+        //     'can'  => 'staff-access',
+        // ],
         [
-            'text' => 'Record Sale',
-            'url'  => 'staff/sale/create',
-            'icon' => 'fas fa-cash-register',
+            'text' => 'New Order',
+            'url'  => 'staff/orders/create',
+            'icon' => 'fas fa-plus',
+            'can'  => 'staff-access',
+        ],
+        [
+            'text' => 'My Orders',
+            'url'  => 'staff/orders',
+            'icon' => 'fas fa-list',
             'can'  => 'staff-access',
         ],
 
